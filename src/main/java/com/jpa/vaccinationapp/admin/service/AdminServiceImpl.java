@@ -30,8 +30,11 @@ public class AdminServiceImpl implements AdminService{
     @Override
     public Admin updateAdminDetails(Admin adminDetails) throws AdminException {
         Optional<Admin> checkAdmin = adminRepo.findByEmailIgnoreCase(adminDetails.getEmail());
+
         if (checkAdmin.isEmpty())
             throw adminNotFoundException;
+        Optional<Admin> admin=adminRepo.findById(checkAdmin.get().getAdminId());
+        adminDetails.setAdminId(admin.get().getAdminId());
         this.adminRepo.save(adminDetails);
         return adminDetails;
     }
